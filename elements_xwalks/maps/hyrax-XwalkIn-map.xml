@@ -51,6 +51,10 @@
         <xwalk:field-source from="subject/genre" />
       </xwalk:field-mapping>
 
+      <xwalk:field-mapping to="field-47">
+        <xwalk:field-source from="titleInfo/subTitle" />
+      </xwalk:field-mapping>
+
       <xwalk:field-mapping to="language">
         <xwalk:field-source from="language/languageTerm" />
       </xwalk:field-mapping>
@@ -66,6 +70,16 @@
       <xwalk:field-mapping to="publisher-url">
         <xwalk:field-source from="/mods:mods/mods:placeTerm[@type = 'code']" select-using="xpath" />
       </xwalk:field-mapping>
+
+
+<!-- add new -->
+      <xwalk:field-mapping to="series">
+        <xwalk:field-source from="/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title" select-using="xpath"/>
+      </xwalk:field-mapping>
+
+
+
+
     </xwalk:field-map>
 
     <xwalk:field-map name="contributors">
@@ -152,13 +166,284 @@
   </xwalk:value-maps>
 
   <xwalkin:object-type-selector>
+
+
     <xwalk:choose>
+
+<!-- ORA OUTPUT TYPES WITHOUT SUBTYPES-->
       <xwalk:when>
-        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">journal-article</xwalk:condition>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Journal article</xwalk:condition>
         <xwalk:result>
           <xwalkin:object-type-selection object-type="journal-article" category="publication" field-map="default-map" />
         </xwalk:result>
       </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Patent</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="patent" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Internet publication</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="internet-publication" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Composition</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="composition" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Working paper</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="c-report" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Report</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="report" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Thesis</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="thesis-dissertation" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Ephemera</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="c-ephemera" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>-->
+
+<!-- ORA BOOK AND SUBTYPES-->
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Book</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Edited book</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="c-book" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Book</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Scholarly edition</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="scholarly-edition" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Book</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Translation</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="c-translation" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Book</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="book" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+
+
+<!-- ORA BOOK SECTION AND SUBTYPES--> 
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Book section</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Chapter</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="chapter" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+<!-- CONFERENCE ITEM AND SUBTYPES-->
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Conference item</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Exhibition</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="exhibition" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Conference item</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Poster</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="poster" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Conference item</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Presentation</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="presentation" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Conference item</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="conference-paper" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+
+  
+
+<!-- ORA DATASET AND SUBTYPES--> 
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Dataset</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Software</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="software" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Dataset</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Design</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="design" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Dataset</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Media</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="media" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+
+      <!-- symplectic_to_ora_field_mapping-2.1 gives Dataset/Media to both figure and media. Suggest it only goes to  Media (as above).
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Dataset</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Media</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="figure" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+    -->
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Dataset</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Fileset</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="fileset" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Dataset</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="dataset" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+<!-- ORA PHYSICAL OBJECT AND SUBTYPES--> 
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Physical object</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Artefact</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="artefact" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+<!--Rather than a nested conditional I have written Device and Product separately to help readability-->
+
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Physical object</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Device</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="c-device-product" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+          <xwalk:condition operator="and">
+            <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Physical object</xwalk:condition>
+            <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Product</xwalk:condition>
+          </xwalk:condition>
+          <xwalk:result>
+            <xwalkin:object-type-selection object-type="c-device-product" category="publication" field-map="default-map" />
+          </xwalk:result>
+        </xwalk:when>
+
+<!-- subject to confirmation that can exist without a subtype-->
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Physical object</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="c-device-product" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+
+<!-- ORA COMPOSITION AND SUBTYPES--> 
+      <xwalk:when>
+        <xwalk:condition operator="and">
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Composition</xwalk:condition>
+          <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='sub_type_of_work']" select-using="xpath">Performance</xwalk:condition>
+        </xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="performance" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+      <xwalk:when>
+        <xwalk:condition operator="equals" argument-field="/*/mods:genre[@type='type_of_work']" select-using="xpath">Composition</xwalk:condition>
+        <xwalk:result>
+          <xwalkin:object-type-selection object-type="composition" category="publication" field-map="default-map" />
+        </xwalk:result>
+      </xwalk:when>
+
+<!-- END OF ORA PERFORMANCE AND SUBTYPES--> 
+
+
       <xwalk:otherwise>
         <xwalk:result>
           <xwalkin:object-type-selection object-type="other" category="publication" field-map="default-map" />
